@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "E-Commerce Dashboard",
+    "description": "A real-time analytics dashboard for online stores.",
+    "tags": ["Next.js", "TypeScript", "Supabase"],
+    "imageUrl": "/images/dashboard.png",
+    "demoUrl": "https://demo.com",
+    "repoUrl": "https://github.com/user/repo",
+    "featured": true
+  }
+]
