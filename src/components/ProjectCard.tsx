@@ -7,7 +7,21 @@ export default function ProjectCard({ project }: { project: Project }) {
         {/* Placeholder for image if not present or real image */}
         <div className="h-48 w-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center text-gray-400">
            {project.imageUrl ? (
-             <img className="h-48 w-full object-cover" src={project.imageUrl} alt={project.title} />
+             <div className="relative h-48 w-full">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
+               <img 
+                 className="h-48 w-full object-cover" 
+                 src={project.imageUrl} 
+                 alt={project.title}
+                 onError={(e) => {
+                   e.currentTarget.style.display = 'none';
+                   e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                 }}
+               />
+               <div className="hidden absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-zinc-800 text-gray-400">
+                 No Image
+               </div>
+             </div>
            ) : (
              <span>No Image</span>
            )}

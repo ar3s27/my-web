@@ -25,7 +25,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <p className="text-base font-semibold leading-7 text-indigo-600 dark:text-indigo-400">{new Date(post.date).toLocaleDateString()}</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">{post.title}</h1>
           <div className="mt-10 max-w-2xl prose dark:prose-invert">
-             <div className="whitespace-pre-wrap font-sans">{post.content}</div>
+             <div 
+                className="whitespace-pre-wrap font-sans"
+                dangerouslySetInnerHTML={{ 
+                  __html: post.content
+                    .replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>')
+                    .replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold mt-6 mb-3">$1</h2>')
+                    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>')
+                    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/\*(.*)\*/gim, '<em>$1</em>')
+                    .replace(/\n/gim, '<br />')
+                }} 
+             />
           </div>
         </div>
       </article>
