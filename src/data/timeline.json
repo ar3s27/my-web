@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "type": "work",
+    "date": "2024 - Present",
+    "date_tr": "2024 - Günümüz",
+    "title": "Full Stack Developer",
+    "title_tr": "Full Stack Geliştirici",
+    "company": "Tech Solutions Inc.",
+    "company_tr": "Tech Çözümleri A.Ş.",
+    "description": "Building modern web applications using Next.js and React.",
+    "description_tr": "Next.js ve React kullanarak modern web uygulamaları geliştirme."
+  },
+  {
+    "id": 2,
+    "type": "education",
+    "date": "2020 - 2024",
+    "date_tr": "2020 - 2024",
+    "title": "Computer Engineering",
+    "title_tr": "Bilgisayar Mühendisliği",
+    "company": "University of Technology",
+    "company_tr": "Teknoloji Üniversitesi",
+    "description": "Bachelor's Degree with focus on Software Engineering.",
+    "description_tr": "Yazılım Mühendisliği odaklı Lisans Derecesi."
+  },
+  {
+    "id": 3,
+    "type": "work",
+    "date": "2022 - 2023",
+    "date_tr": "2022 - 2023",
+    "title": "Frontend Intern",
+    "title_tr": "Frontend Stajyeri",
+    "company": "Digital Agency",
+    "company_tr": "Dijital Ajans",
+    "description": "Developed responsive user interfaces and animations.",
+    "description_tr": "Duyarlı kullanıcı arayüzleri ve animasyonlar geliştirme."
+  },
+  {
+    "type": "work",
+    "date": "2022 - Present",
+    "date_tr": "2022 - Şimdi",
+    "title": "ares",
+    "title_tr": "ares",
+    "company": "as",
+    "company_tr": "as",
+    "description": "as",
+    "description_tr": "as",
+    "id": 1765547540705
+  }
+]
