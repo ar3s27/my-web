@@ -1,3 +1,5 @@
+'use client';
+
 import { Project } from '@/lib/api';
 
 export default function ProjectCard({ project }: { project: Project }) {

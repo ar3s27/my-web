@@ -6,5 +6,21 @@
     "date": "2024-01-01",
     "summary": "My first blog post.",
     "content": "# Hello World\n\nThis is my first post on my new portfolio site."
+  },
+  {
+    "id": 2,
+    "slug": "hello-world",
+    "title": "Deneme",
+    "date": "2024-01-01",
+    "summary": "My first blog post.",
+    "content": "# Hello World\n\nThis is my first post on my new portfolio site."
+  },
+  {
+    "id": 3,
+    "slug": "hello-world",
+    "title": "Deneme2",
+    "date": "2024-01-01",
+    "summary": "My first blog post.",
+    "content": "# Hello World\n\nThis is my first post on my new portfolio site."
   }
 ]

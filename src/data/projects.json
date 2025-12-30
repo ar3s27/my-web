@@ -8,5 +8,15 @@
     "demoUrl": "https://demo.com",
     "repoUrl": "https://github.com/user/repo",
     "featured": true
+  },
+  {
+    "id": 2,
+    "title": "Deneme",
+    "description": "A real-time analytics dashboard for online stores.",
+    "tags": ["Next.js", "TypeScript", "Supabase"],
+    "imageUrl": "/images/dashboard.png",
+    "demoUrl": "https://demo.com",
+    "repoUrl": "https://github.com/user/repo",
+    "featured": true
   }
 ]
