@@ -1,22 +1,49 @@
 [
   {
     "id": 1,
-    "title": "E-Commerce Dashboard",
-    "description": "A real-time analytics dashboard for online stores.",
-    "tags": ["Next.js", "TypeScript", "Supabase"],
+    "title": "Customer Churn Prediction",
+    "title_tr": "Müşteri Kayıp Tahmini",
+    "description": "A machine learning model to predict customer churn using XGBoost and Python.",
+    "description_tr": "XGBoost ve Python kullanarak müşteri kaybını tahmin eden bir makine öğrenmesi modeli.",
+    "tags": [
+      "Python",
+      "Scikit-learn",
+      "XGBoost"
+    ],
     "imageUrl": "/images/dashboard.png",
     "demoUrl": "https://demo.com",
-    "repoUrl": "https://github.com/user/repo",
+    "repoUrl": "https://github.com/ar3s27",
     "featured": true
   },
   {
     "id": 2,
-    "title": "Deneme",
-    "description": "A real-time analytics dashboard for online stores.",
-    "tags": ["Next.js", "TypeScript", "Supabase"],
-    "imageUrl": "/images/dashboard.png",
+    "title": "Image Classification API",
+    "title_tr": "Görüntü Sınıflandırma API'si",
+    "description": "REST API for classifying images using PyTorch and FastAPI.",
+    "description_tr": "PyTorch ve FastAPI kullanarak görüntüleri sınıflandıran REST API.",
+    "tags": [
+      "Python",
+      "PyTorch",
+      "FastAPI",
+      "Docker"
+    ],
+    "imageUrl": "/images/star wars (1).png",
     "demoUrl": "https://demo.com",
-    "repoUrl": "https://github.com/user/repo",
+    "repoUrl": "https://github.com/ar3s27",
     "featured": true
+  },
+  {
+    "title": "ares",
+    "title_tr": "ares",
+    "description": "a",
+    "description_tr": "a",
+    "tags": [
+      "a"
+    ],
+    "imageUrl": "/images/354463964_168080149430312_8902669992556234991_n.jpg",
+    "demoUrl": "",
+    "repoUrl": "",
+    "featured": true,
+    "id": 3
   }
 ]

@@ -1,8 +1,11 @@
 'use client';
 
 import { Project } from '@/lib/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const { language } = useLanguage();
+
   return (
     <div className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
       <div className="flex-shrink-0">
@@ -32,10 +35,10 @@ export default function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col justify-between p-6">
         <div className="flex-1">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            {project.title}
+            {language === 'tr' ? (project.title_tr || project.title) : project.title}
           </h3>
           <p className="mt-3 text-base text-gray-500 dark:text-gray-400">
-            {project.description}
+            {language === 'tr' ? (project.description_tr || project.description) : project.description}
           </p>
         </div>
         <div className="mt-6">

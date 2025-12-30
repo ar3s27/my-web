@@ -6,7 +6,9 @@ const dataDirectory = path.join(process.cwd(), 'src/data');
 export interface Project {
   id: number;
   title: string;
+  title_tr?: string;
   description: string;
+  description_tr?: string;
   tags: string[];
   imageUrl: string;
   demoUrl?: string;
@@ -18,9 +20,12 @@ export interface BlogPost {
   id: number;
   slug: string;
   title: string;
+  title_tr?: string;
   date: string;
   summary: string;
+  summary_tr?: string;
   content: string;
+  content_tr?: string;
 }
 
 export async function getProjects(): Promise<Project[]> {

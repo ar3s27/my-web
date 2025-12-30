@@ -1,26 +1,35 @@
 [
   {
     "id": 1,
-    "slug": "hello-world",
-    "title": "Hello World",
-    "date": "2024-01-01",
-    "summary": "My first blog post.",
-    "content": "# Hello World\n\nThis is my first post on my new portfolio site."
+    "slug": "intro-to-machine-learning",
+    "title": "Introduction to Machine Learning",
+    "title_tr": "Makine Öğrenmesine Giriş",
+    "date": "2024-03-15",
+    "summary": "A beginner's guide to understanding the basics of Machine Learning.",
+    "summary_tr": "Makine Öğrenmesinin temellerini anlamak için başlangıç rehberi.",
+    "content": "# Introduction to Machine Learning\n\nMachine learning is a subset of artificial intelligence that focuses on building systems that learn from data...",
+    "content_tr": "# Makine Öğrenmesine Giriş\n\nMakine öğrenmesi, veriden öğrenen sistemler oluşturmaya odaklanan yapay zekanın bir alt dalıdır..."
   },
   {
     "id": 2,
-    "slug": "hello-world",
-    "title": "Deneme",
-    "date": "2024-01-01",
-    "summary": "My first blog post.",
-    "content": "# Hello World\n\nThis is my first post on my new portfolio site."
+    "slug": "deep-learning-trends",
+    "title": "Deep Learning Trends in 2024",
+    "title_tr": "2024 Derin Öğrenme Trendleri",
+    "date": "2024-03-10",
+    "summary": "Exploring the latest advancements in Deep Learning and Neural Networks.",
+    "summary_tr": "Derin Öğrenme ve Sinir Ağlarındaki son gelişmeleri keşfediyoruz.",
+    "content": "# Deep Learning Trends\n\nDeep learning continues to evolve rapidly with new architectures like Transformers leading the way...",
+    "content_tr": "# Derin Öğrenme Trendleri\n\nDerin öğrenme, Transformers gibi yeni mimarilerin öncülüğünde hızla gelişmeye devam ediyor..."
   },
   {
     "id": 3,
-    "slug": "hello-world",
-    "title": "Deneme2",
-    "date": "2024-01-01",
-    "summary": "My first blog post.",
-    "content": "# Hello World\n\nThis is my first post on my new portfolio site."
+    "title": "Code Syntax Highlighting Demo",
+    "title_tr": "Kod Renklendirme Demosu",
+    "slug": "code-demo",
+    "date": "2024-12-12",
+    "summary": "A live demonstration of how to write code blocks in markdown.",
+    "summary_tr": "Markdown ile kod bloklarının nasıl yazılacağına dair canlı örnek.",
+    "content": "# How to Write Code\n\nYou can add code blocks by wrapping your code with three backticks (```) followed by the language name.\n\n### Python Example\n```python\ndef hello_world():\n    print(\"Hello World!\")\n    return True\n```\n\n### JavaScript Example\n```javascript\nconst website = \"My Portfolio\";\nconsole.log(`Welcome to ${website}`);\n\n// This is a comment\nfunction add(a, b) {\n  return a + b;\n}\n```\n\n### HTML Example\n```html\n<div class=\"container\">\n  <h1>Hello World</h1>\n  <p>This is a paragraph.</p>\n</div>\n```",
+    "content_tr": "# Kod Nasıl Yazılır?\n\nKod bloklarını, kodunuzu üç ters tırnak (```) içine alıp yanına dilin adını yazarak ekleyebilirsiniz.\n\n### Python Örneği\n```python\ndef hello_world():\n    print(\"Merhaba Dünya!\")\n    return True\n```\n\n### JavaScript Örneği\n```javascript\nconst site = \"Portfolyom\";\nconsole.log(`${site}'a Hoşgeldiniz`);\n\n// Bu bir yorum satırı\nfunction topla(a, b) {\n  return a + b;\n}\n```\n\n### HTML Örneği\n```html\n<div class=\"kutu\">\n  <h1>Merhaba Dünya</h1>\n  <p>Bu bir paragraf.</p>\n</div>\n```"
   }
 ]

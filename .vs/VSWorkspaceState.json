@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.next",
+    "\\.next\\server",
+    "\\.next\\static",
+    "\\.next\\static\\development",
+    "\\public",
+    "\\public\\images",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\auth",
+    "\\src\\app\\auth\\signin"
+  ],
+  "SelectedNode": "\\src\\app\\auth\\signin\\page.tsx",
+  "PreviewInSolutionExplorer": false
+}
