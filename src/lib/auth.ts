@@ -1,5 +1,5 @@
-import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -7,40 +7,44 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Simple hardcoded check for demo purposes
-        // In production, use environment variables
-        const validUsername = process.env.ADMIN_USERNAME || "admin";
-        const validPassword = process.env.ADMIN_PASSWORD || "admin123";
-
         if (
-          credentials?.username === validUsername &&
-          credentials?.password === validPassword
+          credentials?.username === process.env.ADMIN_USERNAME &&
+          credentials?.password === process.env.ADMIN_PASSWORD
         ) {
-          return { id: "1", name: "Admin", email: "admin@example.com" };
+          return {
+            id: "admin",
+            name: "Admin",
+            role: "admin",
+          };
         }
         return null;
-      }
-    })
+      },
+    }),
   ],
-  pages: {
-    signIn: "/auth/signin",
-  },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = "admin";
+        token.role = (user as any).role;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) {
+      if (session.user) {
         (session.user as any).role = token.role;
       }
       return session;
-    }
+    },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+
+  session: {
+    strategy: "jwt",
+  },
+
+  pages: {
+    signIn: "/admin/login",
+  },
 };
