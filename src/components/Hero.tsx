@@ -2,12 +2,14 @@
 
 import { useLanguage } from '@/context/LanguageContext';
 import { motion } from 'framer-motion';
+import InteractiveBackground from './InteractiveBackground';
 
 export default function Hero() {
   const { t } = useLanguage();
 
   return (
-    <div className="relative isolate px-6 pt-14 lg:px-8">
+    <div className="relative isolate px-6 pt-14 lg:px-8 overflow-hidden">
+      <InteractiveBackground />
       <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
         <div className="text-center">
           <motion.h1 
