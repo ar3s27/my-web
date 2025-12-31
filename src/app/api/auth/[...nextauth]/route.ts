@@ -1,6 +1,50 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { NextAuthOptions } from "next-auth";
 
-const handler = NextAuth(authOptions);
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (
+          credentials?.username === process.env.ADMIN_USERNAME &&
+          credentials?.password === process.env.ADMIN_PASSWORD
+        ) {
+          return {
+            id: "admin",
+            name: "Admin",
+            role: "admin", // 
+          };
+        }
+        return null;
+      },
+    }),
+  ],
 
-export { handler as GET, handler as POST };
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role; // 
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role as string;
+      }
+      return session;
+    },
+  },
+
+  session: {
+    strategy: "jwt",
+  },
+
+  pages: {
+    signIn: "/admin/login",
+  },
+};
