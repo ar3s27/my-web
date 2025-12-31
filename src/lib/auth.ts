@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/admin", // login ekranın burada
+    signIn: "/auth/signin", // login page location
   },
 
   session: {
