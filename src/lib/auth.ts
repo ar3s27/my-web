@@ -15,11 +15,12 @@ export const authOptions: NextAuthOptions = {
           credentials?.password === process.env.ADMIN_PASSWORD
         ) {
           return {
-            id: "admin",
+            id: "1",
             name: "Admin",
-            role: "admin",
+            role: "admin", // 🔥 EN KRİTİK SATIR
           };
         }
+
         return null;
       },
     }),
@@ -32,6 +33,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).role = token.role;
@@ -40,11 +42,13 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
+  pages: {
+    signIn: "/admin", // login ekranın burada
+  },
+
   session: {
     strategy: "jwt",
   },
 
-  pages: {
-    signIn: "/admin/login",
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
