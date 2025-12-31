@@ -47,17 +47,33 @@ export async function POST(request: Request) {
     }
 
     // Save to KV
+    let result = { success: true, message: 'Projects updated successfully' };
+    
     try {
         await kv.set('projects', projects);
-        // Also save to file as backup since we are in a mixed mode
-        await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
-    } catch (e) {
-        console.warn('KV Write Error (falling back to file only):', e);
-        // If KV fails, we MUST ensure file is updated
-        await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+        // Try to sync file if possible (works locally, fails in prod)
+        try {
+            await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+        } catch (fsError) {
+            // Ignore file write error if KV succeeded
+            console.log('File write skipped (likely read-only fs)', fsError);
+        }
+    } catch (kvError) {
+        console.warn('KV Write Error:', kvError);
+        
+        // If KV failed, we MUST try to write to file, but if that fails too, we are stuck.
+        try {
+            await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+             // If we reached here, file fallback worked (likely local dev)
+        } catch (fsError) {
+            console.error('CRITICAL: Both KV and File Write failed.');
+            return NextResponse.json({ 
+                error: 'Storage Error: Database not configured and file system is read-only. Please set KV_REST_API_* environment variables in Vercel.' 
+            }, { status: 500 });
+        }
     }
     
-    return NextResponse.json({ success: true, message: 'Projects updated successfully' });
+    return NextResponse.json(result);
   } catch (error) {
     console.error('Error writing projects:', error);
     return NextResponse.json({ error: 'Failed to update projects' }, { status: 500 });

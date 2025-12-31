@@ -65,11 +65,22 @@ export async function POST(request: Request) {
     
     try {
         await kv.set('timeline', events);
-        // Backup to file
-        fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
-    } catch (e) {
-         console.warn('KV Write Error (falling back to file only):', e);
-         fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
+        // Try to sync file if possible
+        try {
+             fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
+        } catch (fsError) {
+             // Ignore
+        }
+    } catch (kvError) {
+         console.warn('KV Write Error:', kvError);
+         try {
+            fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
+         } catch (fsError) {
+            console.error('CRITICAL: Both KV and File Write failed.');
+            return NextResponse.json({ 
+                error: 'Storage Error: Database not configured and file system is read-only. Please set KV_REST_API_* environment variables in Vercel.' 
+            }, { status: 500 });
+         }
     }
     
     return NextResponse.json({ success: true });
