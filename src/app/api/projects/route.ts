@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { readFile, writeFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { kv } from '@vercel/kv';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +11,12 @@ const projectsFilePath = path.join(process.cwd(), 'src/data/projects.json');
 
 export async function GET() {
   try {
+    const kvProjects = await kv.get('projects');
+    if (kvProjects) {
+        return NextResponse.json(kvProjects);
+    }
+    
+    // Fallback to file
     const fileContents = await readFile(projectsFilePath, 'utf8');
     const projects = JSON.parse(fileContents);
     return NextResponse.json(projects);
@@ -33,7 +40,8 @@ export async function POST(request: Request) {
          return NextResponse.json({ error: 'Invalid data format' }, { status: 400 });
     }
 
-    await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+    // Save to KV
+    await kv.set('projects', projects);
     
     return NextResponse.json({ success: true, message: 'Projects updated successfully' });
   } catch (error) {

@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: "1",
             name: "Admin",
-            role: "admin", // 🔥 EN KRİTİK SATIR
+            role: "admin", 
           };
         }
 
@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/auth/signin", // login page location
+    signIn: "/auth/signin", 
   },
 
   session: {

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { kv } from '@vercel/kv';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,27 +23,29 @@ interface TimelineEvent {
   description_tr?: string;
 }
 
-function getEvents() {
-  if (!fs.existsSync(TIMELINE_FILE)) {
-    fs.writeFileSync(TIMELINE_FILE, JSON.stringify([]));
-    return [];
-  }
-  const data = fs.readFileSync(TIMELINE_FILE, 'utf8');
-  return JSON.parse(data) as TimelineEvent[];
-}
-
 function getYear(dateStr: string) {
   const match = dateStr.match(/\d{4}/);
   return match ? parseInt(match[0]) : 9999;
 }
 
-function saveEvents(events: TimelineEvent[]) {
-  fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
-}
-
 export async function GET() {
   try {
-    const events = getEvents();
+    let events: TimelineEvent[] = [];
+    
+    // Try KV first
+    try {
+        const kvEvents = await kv.get<TimelineEvent[]>('timeline');
+        if (kvEvents) events = kvEvents;
+    } catch (e) {
+        console.warn('KV fetch failed for timeline, using file fallback');
+    }
+
+    // Fallback to file if empty
+    if (events.length === 0 && fs.existsSync(TIMELINE_FILE)) {
+        const data = fs.readFileSync(TIMELINE_FILE, 'utf8');
+        events = JSON.parse(data) as TimelineEvent[];
+    }
+
     // Sort newest to oldest
     events.sort((a, b) => getYear(b.date) - getYear(a.date));
     return NextResponse.json(events);
@@ -59,7 +62,8 @@ export async function POST(request: Request) {
     }
 
     const events = await request.json();
-    saveEvents(events);
+    await kv.set('timeline', events);
+    
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update timeline events' }, { status: 500 });
