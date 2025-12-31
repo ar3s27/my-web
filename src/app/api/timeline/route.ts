@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { kv } from '@vercel/kv';
+import redis from '@/lib/redis';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,12 +32,12 @@ export async function GET() {
   try {
     let events: TimelineEvent[] = [];
     
-    // Try KV first
+    // Try Redis first
     try {
-        const kvEvents = await kv.get<TimelineEvent[]>('timeline');
-        if (kvEvents) events = kvEvents;
+        const raw = await redis.get('timeline');
+        if (raw) events = JSON.parse(raw);
     } catch (e) {
-        console.warn('KV fetch failed for timeline, using file fallback');
+        console.warn('Redis fetch failed for timeline, using file fallback', e);
     }
 
     // Fallback to file if empty
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     const events = await request.json();
     
     try {
-        await kv.set('timeline', events);
+        await redis.set('timeline', JSON.stringify(events));
         // Try to sync file if possible
         try {
              fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
@@ -72,13 +72,13 @@ export async function POST(request: Request) {
              // Ignore
         }
     } catch (kvError) {
-         console.warn('KV Write Error:', kvError);
+         console.warn('Redis Write Error:', kvError);
          try {
             fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
          } catch (fsError) {
-            console.error('CRITICAL: Both KV and File Write failed.');
+            console.error('CRITICAL: Both Redis and File Write failed.');
             return NextResponse.json({ 
-                error: 'Storage Error: Database not configured and file system is read-only. Please set KV_REST_API_* environment variables in Vercel.' 
+                error: 'Storage Error: Database not configured and file system is read-only. Please set REDIS_URL environment variable in Vercel.' 
             }, { status: 500 });
          }
     }
