@@ -28,14 +28,16 @@ export interface BlogPost {
   content_tr?: string;
 }
 
-import { kv } from '@vercel/kv';
+import redis from '@/lib/redis';
 
 export async function getProjects(): Promise<Project[]> {
   try {
-    const projects = await kv.get<Project[]>('projects');
-    if (projects) return projects;
+    const projectsJson = await redis.get('projects');
+    if (projectsJson) {
+        return JSON.parse(projectsJson) as Project[];
+    }
   } catch (error) {
-    console.warn('Failed to fetch projects from KV, falling back to file system');
+    console.warn('Failed to fetch projects from Redis, falling back to file system', error);
   }
   
   const filePath = path.join(dataDirectory, 'projects.json');
