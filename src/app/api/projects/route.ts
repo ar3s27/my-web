@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { kv } from '@vercel/kv';
+import redis from '@/lib/redis';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +13,10 @@ export async function GET() {
   try {
     let kvProjects;
     try {
-        kvProjects = await kv.get('projects');
+        const raw = await redis.get('projects');
+        if (raw) kvProjects = JSON.parse(raw);
     } catch (e) {
-        console.warn('KV Projects Fetch Error (using fallback):');
+        console.warn('Redis Projects Fetch Error (using fallback):', e);
     }
 
     if (kvProjects) {
@@ -46,29 +47,29 @@ export async function POST(request: Request) {
          return NextResponse.json({ error: 'Invalid data format' }, { status: 400 });
     }
 
-    // Save to KV
+    // Save to Redis
     let result = { success: true, message: 'Projects updated successfully' };
     
     try {
-        await kv.set('projects', projects);
+        await redis.set('projects', JSON.stringify(projects));
         // Try to sync file if possible (works locally, fails in prod)
         try {
             await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
         } catch (fsError) {
-            // Ignore file write error if KV succeeded
+            // Ignore file write error if Redis succeeded
             console.log('File write skipped (likely read-only fs)', fsError);
         }
     } catch (kvError) {
-        console.warn('KV Write Error:', kvError);
+        console.warn('Redis Write Error:', kvError);
         
-        // If KV failed, we MUST try to write to file, but if that fails too, we are stuck.
+        // If Redis failed, we MUST try to write to file, but if that fails too, we are stuck.
         try {
             await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
              // If we reached here, file fallback worked (likely local dev)
         } catch (fsError) {
-            console.error('CRITICAL: Both KV and File Write failed.');
+            console.error('CRITICAL: Both Redis and File Write failed.');
             return NextResponse.json({ 
-                error: 'Storage Error: Database not configured and file system is read-only. Please set KV_REST_API_* environment variables in Vercel.' 
+                error: 'Storage Error: Database not configured and file system is read-only. Please set REDIS_URL environment variable in Vercel.' 
             }, { status: 500 });
         }
     }
