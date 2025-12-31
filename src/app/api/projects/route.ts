@@ -4,6 +4,8 @@ import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 const projectsFilePath = path.join(process.cwd(), 'src/data/projects.json');
 
 export async function GET() {

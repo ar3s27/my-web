@@ -28,7 +28,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, url: `/images/${file.name}` });
   } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json({ success: false, message: 'Upload failed' }, { status: 500 });
+    console.error('Upload error detail:', error);
+    return NextResponse.json({ 
+      success: false, 
+      message: error instanceof Error ? error.message : 'Upload failed due to unknown error' 
+    }, { status: 500 });
   }
 }

@@ -27,7 +27,7 @@ export default function ProjectsAdmin() {
   }, []);
 
   const fetchProjects = async () => {
-    const res = await fetch('/api/projects');
+    const res = await fetch('/api/projects', { cache: 'no-store' });
     const data = await res.json();
     setProjects(data);
   };
