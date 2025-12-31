@@ -4,6 +4,8 @@ import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 const TIMELINE_FILE = path.join(process.cwd(), 'src/data/timeline.json');
 
 // Interface for Timeline Event
@@ -29,6 +31,11 @@ function getEvents() {
   return JSON.parse(data) as TimelineEvent[];
 }
 
+function getYear(dateStr: string) {
+  const match = dateStr.match(/\d{4}/);
+  return match ? parseInt(match[0]) : 9999;
+}
+
 function saveEvents(events: TimelineEvent[]) {
   fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
 }
@@ -36,6 +43,8 @@ function saveEvents(events: TimelineEvent[]) {
 export async function GET() {
   try {
     const events = getEvents();
+    // Sort oldest to newest
+    events.sort((a, b) => getYear(a.date) - getYear(b.date));
     return NextResponse.json(events);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch timeline events' }, { status: 500 });
