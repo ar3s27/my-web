@@ -43,8 +43,8 @@ function saveEvents(events: TimelineEvent[]) {
 export async function GET() {
   try {
     const events = getEvents();
-    // Sort oldest to newest
-    events.sort((a, b) => getYear(a.date) - getYear(b.date));
+    // Sort newest to oldest
+    events.sort((a, b) => getYear(b.date) - getYear(a.date));
     return NextResponse.json(events);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch timeline events' }, { status: 500 });
