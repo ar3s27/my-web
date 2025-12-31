@@ -62,7 +62,15 @@ export async function POST(request: Request) {
     }
 
     const events = await request.json();
-    await kv.set('timeline', events);
+    
+    try {
+        await kv.set('timeline', events);
+        // Backup to file
+        fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
+    } catch (e) {
+         console.warn('KV Write Error (falling back to file only):', e);
+         fs.writeFileSync(TIMELINE_FILE, JSON.stringify(events, null, 2));
+    }
     
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -11,7 +11,13 @@ const projectsFilePath = path.join(process.cwd(), 'src/data/projects.json');
 
 export async function GET() {
   try {
-    const kvProjects = await kv.get('projects');
+    let kvProjects;
+    try {
+        kvProjects = await kv.get('projects');
+    } catch (e) {
+        console.warn('KV Projects Fetch Error (using fallback):');
+    }
+
     if (kvProjects) {
         return NextResponse.json(kvProjects);
     }
@@ -41,7 +47,15 @@ export async function POST(request: Request) {
     }
 
     // Save to KV
-    await kv.set('projects', projects);
+    try {
+        await kv.set('projects', projects);
+        // Also save to file as backup since we are in a mixed mode
+        await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+    } catch (e) {
+        console.warn('KV Write Error (falling back to file only):', e);
+        // If KV fails, we MUST ensure file is updated
+        await writeFile(projectsFilePath, JSON.stringify(projects, null, 2), 'utf8');
+    }
     
     return NextResponse.json({ success: true, message: 'Projects updated successfully' });
   } catch (error) {
