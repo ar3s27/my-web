@@ -7,6 +7,10 @@ import ContactSection from '@/components/ContactSection';
 import SkillsSection from '@/components/SkillsSection';
 import { getProjects } from '@/lib/api';
 
+// Revalidate every hour, or use 0 for instant updates. 
+// Using 0 ensures that new projects appear immediately after adding them in Admin.
+export const revalidate = 0;
+
 export default async function Home() {
   const projects = await getProjects();
   const featuredProjects = projects.filter(p => p.featured);

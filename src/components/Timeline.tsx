@@ -23,7 +23,7 @@ export default function Timeline() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
 
   useEffect(() => {
-    fetch('/api/timeline')
+    fetch('/api/timeline', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(err => console.error('Failed to fetch timeline', err));
