@@ -46,7 +46,16 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getPosts(): Promise<BlogPost[]> {
-  // Posts might not be editable yet, but good to prep
+  try {
+    const postsJson = await redis.get('posts');
+    if (postsJson) {
+      const posts = JSON.parse(postsJson) as BlogPost[];
+      return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+    }
+  } catch (error) {
+    console.warn('Failed to fetch posts from Redis, falling back to file system', error);
+  }
+
   const filePath = path.join(dataDirectory, 'posts.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const posts: BlogPost[] = JSON.parse(fileContents);

@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import redis from '@/lib/redis';
 
 const COMMENTS_FILE = path.join(process.cwd(), 'src/data/comments.json');
 
@@ -15,17 +16,34 @@ interface Comment {
   date: string;
 }
 
-function getComments() {
-  if (!fs.existsSync(COMMENTS_FILE)) {
-    fs.writeFileSync(COMMENTS_FILE, JSON.stringify([]));
-    return [];
+async function getComments(): Promise<Comment[]> {
+  try {
+    const commentsJson = await redis.get('comments');
+    if (commentsJson) {
+      return JSON.parse(commentsJson);
+    }
+  } catch (error) {
+    console.warn('Redis get failed', error);
   }
-  const data = fs.readFileSync(COMMENTS_FILE, 'utf8');
-  return JSON.parse(data) as Comment[];
+
+  // Fallback to file system
+  if (fs.existsSync(COMMENTS_FILE)) {
+    const data = fs.readFileSync(COMMENTS_FILE, 'utf8');
+    const comments = JSON.parse(data) as Comment[];
+    // Seed Redis
+    await saveComments(comments);
+    return comments;
+  }
+  
+  return [];
 }
 
-function saveComments(comments: Comment[]) {
-  fs.writeFileSync(COMMENTS_FILE, JSON.stringify(comments, null, 2));
+async function saveComments(comments: Comment[]) {
+  try {
+    await redis.set('comments', JSON.stringify(comments));
+  } catch (error) {
+    console.error('Redis save failed', error);
+  }
 }
 
 export async function GET(request: Request) {
@@ -33,7 +51,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const postId = searchParams.get('postId');
 
-    const comments = getComments();
+    const comments = await getComments();
 
     if (postId) {
       const filtered = comments.filter(c => c.postId === postId);
@@ -55,7 +73,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const comments = getComments();
+    const comments = await getComments();
     const newComment: Comment = {
       id: Date.now(),
       postId,
@@ -65,10 +83,11 @@ export async function POST(request: Request) {
     };
 
     comments.push(newComment);
-    saveComments(comments);
+    await saveComments(comments);
 
     return NextResponse.json(newComment, { status: 201 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
   }
 }
@@ -87,17 +106,18 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    const comments = getComments();
+    const comments = await getComments();
     const filtered = comments.filter(c => c.id !== Number(id));
 
     if (comments.length === filtered.length) {
       return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
     }
 
-    saveComments(filtered);
+    await saveComments(filtered);
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to delete comment' }, { status: 500 });
   }
 }

@@ -1,22 +1,60 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import redis from '@/lib/redis';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/posts.json');
 
-function getPosts() {
-  const fileData = fs.readFileSync(dataFilePath, 'utf8');
-  return JSON.parse(fileData);
+// Interface for a Post (matching what's in admin page)
+interface Post {
+  id: number;
+  slug: string;
+  title: string;
+  title_tr?: string;
+  date: string;
+  summary: string;
+  summary_tr?: string;
+  content: string;
+  content_tr?: string;
+  [key: string]: any; 
 }
 
-function savePosts(posts: any[]) {
-  fs.writeFileSync(dataFilePath, JSON.stringify(posts, null, 2));
+async function getPosts(): Promise<Post[]> {
+  try {
+    const postsJson = await redis.get('posts');
+    if (postsJson) {
+      return JSON.parse(postsJson);
+    }
+  } catch (error) {
+    console.warn('Redis get failed', error);
+  }
+
+  // Fallback to file system
+  if (fs.existsSync(dataFilePath)) {
+    const fileData = fs.readFileSync(dataFilePath, 'utf8');
+    const posts = JSON.parse(fileData);
+    // Seed Redis
+    await savePosts(posts);
+    return posts;
+  }
+  
+  return [];
+}
+
+async function savePosts(posts: Post[]) {
+  try {
+    await redis.set('posts', JSON.stringify(posts));
+  } catch (error) {
+    console.error('Redis save failed', error);
+  }
 }
 
 export async function GET() {
   try {
-    const posts = getPosts();
-    return NextResponse.json(posts);
+    const posts = await getPosts();
+    // Sort by date descending
+    const sortedPosts = posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+    return NextResponse.json(sortedPosts);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 });
   }
@@ -25,18 +63,19 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const posts = getPosts();
+    const posts = await getPosts();
     
     const newPost = {
-      id: posts.length > 0 ? Math.max(...posts.map((p: any) => p.id)) + 1 : 1,
+      id: posts.length > 0 ? Math.max(...posts.map((p) => p.id)) + 1 : 1,
       ...body,
     };
 
     posts.push(newPost);
-    savePosts(posts);
+    await savePosts(posts);
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to create post' }, { status: 500 });
   }
 }
@@ -50,18 +89,19 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    const posts = getPosts();
-    const index = posts.findIndex((p: any) => p.id === id);
+    const posts = await getPosts();
+    const index = posts.findIndex((p) => p.id === id);
 
     if (index === -1) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     posts[index] = { ...posts[index], ...updates };
-    savePosts(posts);
+    await savePosts(posts);
 
     return NextResponse.json(posts[index]);
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
   }
 }
@@ -75,17 +115,18 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    const posts = getPosts();
-    const filteredPosts = posts.filter((p: any) => p.id !== parseInt(id));
+    const posts = await getPosts();
+    const filteredPosts = posts.filter((p) => p.id !== parseInt(id));
 
     if (posts.length === filteredPosts.length) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    savePosts(filteredPosts);
+    await savePosts(filteredPosts);
 
     return NextResponse.json({ message: 'Post deleted' });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
   }
 }
