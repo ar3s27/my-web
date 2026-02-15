@@ -4,6 +4,7 @@ import path from 'path';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import redis from '@/lib/redis';
+import { revalidatePath } from 'next/cache';
 
 const COMMENTS_FILE = path.join(process.cwd(), 'src/data/comments.json');
 
@@ -85,6 +86,8 @@ export async function POST(request: Request) {
     comments.push(newComment);
     await saveComments(comments);
 
+    revalidatePath(`/blog/${postId}`);
+
     return NextResponse.json(newComment, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -107,13 +110,19 @@ export async function DELETE(request: Request) {
     }
 
     const comments = await getComments();
-    const filtered = comments.filter(c => c.id !== Number(id));
+    const commentToDelete = comments.find(c => c.id === Number(id));
 
-    if (comments.length === filtered.length) {
-      return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
+    if (!commentToDelete) {
+        return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
     }
 
+    const filtered = comments.filter(c => c.id !== Number(id));
+
     await saveComments(filtered);
+
+    if (commentToDelete.postId) {
+        revalidatePath(`/blog/${commentToDelete.postId}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
