@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import redis from '@/lib/redis';
+import { revalidatePath } from 'next/cache';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/posts.json');
 
@@ -73,6 +74,8 @@ export async function POST(request: Request) {
     posts.push(newPost);
     await savePosts(posts);
 
+    revalidatePath('/blog');
+    
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -99,6 +102,11 @@ export async function PUT(request: Request) {
     posts[index] = { ...posts[index], ...updates };
     await savePosts(posts);
 
+    revalidatePath('/blog');
+    if (posts[index].slug) {
+        revalidatePath(`/blog/${posts[index].slug}`);
+    }
+
     return NextResponse.json(posts[index]);
   } catch (error) {
     console.error(error);
@@ -123,6 +131,8 @@ export async function DELETE(request: Request) {
     }
 
     await savePosts(filteredPosts);
+
+    revalidatePath('/blog');
 
     return NextResponse.json({ message: 'Post deleted' });
   } catch (error) {
