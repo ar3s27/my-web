@@ -112,8 +112,17 @@ export default function ProjectsAdmin() {
 
   const handleDelete = async (id: number) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      await fetch(`/api/projects?id=${id}`, { method: 'DELETE' });
-      fetchProjects();
+      const updatedProjects = projects.filter(p => p.id !== id);
+      
+      // Send the ENTIRE updated array to the API (overwrite)
+      await fetch('/api/projects', {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProjects),
+      });
+
+      setProjects(updatedProjects); // Update local state immediately
+      // Optional: fetchProjects(); // Sync with server to be safe
     }
   };
 
