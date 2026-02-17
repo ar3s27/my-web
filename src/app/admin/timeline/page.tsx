@@ -86,8 +86,11 @@ export default function AdminTimeline() {
           <input {...register('type')} placeholder="Type (e.g. Work, Education, Award)" className="p-2 rounded border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-indigo-500" required />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:col-span-2">
-            <input {...register('date')} placeholder="Date (EN)" className="p-2 rounded border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-indigo-500" required />
-            <input {...register('date_tr')} placeholder="Tarih (TR)" className="p-2 rounded border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-indigo-500" />
+            <div className="flex flex-col gap-1">
+              <input {...register('date')} placeholder="Date (e.g. January 2024)" className="p-2 rounded border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-indigo-500" required />
+              <span className="text-xs text-gray-500">Format: Month Year (e.g. October 2023) or Year (2023)</span>
+            </div>
+            <input {...register('date_tr')} placeholder="Tarih (TR) (Örn: Ocak 2024)" className="p-2 rounded border bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-zinc-600 focus:ring-2 focus:ring-indigo-500" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:col-span-2">

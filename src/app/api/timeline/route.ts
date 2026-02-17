@@ -23,9 +23,22 @@ interface TimelineEvent {
   description_tr?: string;
 }
 
-function getYear(dateStr: string) {
+function parseDate(dateStr: string): number {
+  // Try to parse the date string directly
+  const timestamp = Date.parse(dateStr);
+  if (!isNaN(timestamp)) {
+    return timestamp;
+  }
+  
+  // Fallback: try to extract year
   const match = dateStr.match(/\d{4}/);
-  return match ? parseInt(match[0]) : 9999;
+  if (match) {
+    return new Date(parseInt(match[0]), 0, 1).getTime();
+  }
+  
+  // If all else fails, return a default far past date or future date depending on preference.
+  // We'll return 0 (1970) to put it at the end if sorting desc.
+  return 0;
 }
 
 export async function GET() {
@@ -47,7 +60,7 @@ export async function GET() {
     }
 
     // Sort newest to oldest
-    events.sort((a, b) => getYear(b.date) - getYear(a.date));
+    events.sort((a, b) => parseDate(b.date) - parseDate(a.date));
     return NextResponse.json(events);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch timeline events' }, { status: 500 });
