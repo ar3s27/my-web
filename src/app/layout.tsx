@@ -5,16 +5,16 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Personal Portfolio",
-  description: "Showcasing my projects and skills",
+  title: "Muhammed Veysel Erkoyuncu | Portfolio",
+  description: "AI & Data Scientist Portfolio of Muhammed Veysel Erkoyuncu",
   openGraph: {
-    title: 'My Personal Portfolio',
-    description: 'Showcasing my projects and skills',
-    url: 'https://mywebsite.com',
-    siteName: 'My Portfolio',
+    title: 'Muhammed Veysel Erkoyuncu | Portfolio',
+    description: 'AI & Data Scientist Portfolio',
+    url: 'https://veyse.net', // Assuming this might be the domain, or leave generic
+    siteName: 'Muhammed Veysel Erkoyuncu',
     images: [
       {
-        url: 'https://mywebsite.com/og-image.png',
+        url: '/images/ProfilePhoto.png', // Use local image if available or generic
         width: 1200,
         height: 630,
       },
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My Personal Portfolio',
-    description: 'Showcasing my projects and skills',
-    images: ['https://mywebsite.com/og-image.png'],
+    title: 'Muhammed Veysel Erkoyuncu',
+    description: 'AI & Data Scientist Portfolio',
+    images: ['/images/ProfilePhoto.png'],
   },
 };
 
