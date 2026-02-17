@@ -51,7 +51,12 @@ export default function ProjectCard({ project }: { project: Project }) {
           </div>
           <div className="flex gap-4">
             {project.demoUrl && (
-              <a href={project.demoUrl} className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+              <a 
+                href={project.demoUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
                 Live Demo
               </a>
             )}
