@@ -28,6 +28,20 @@ export interface BlogPost {
   content_tr?: string;
 }
 
+export interface Prompt {
+  id: string;
+  title: string;
+  title_tr?: string;
+  description: string;
+  description_tr?: string;
+  content: string;
+  content_tr?: string;
+  category: string;
+  tags: string[];
+  imageUrl?: string; // For the banner image of the prompt card or section
+  createdAt: string;
+}
+
 import redis from '@/lib/redis';
 
 export async function getProjects(): Promise<Project[]> {

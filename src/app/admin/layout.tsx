@@ -13,6 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Projects', href: '/admin/projects' },
     { name: 'Comments', href: '/admin/comments' },
     { name: 'Timeline', href: '/admin/timeline' },
+    { name: 'Prompts', href: '/admin/prompts' },
   ];
 
   return (

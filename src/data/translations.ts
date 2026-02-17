@@ -56,6 +56,16 @@ export const translations = {
       loading: 'Loading comments...',
       error: 'Failed to post comment. Please try again.',
     },
+    prompts: {
+      title: 'AI Prompts',
+      bannerTitle: 'Unlock Creativity',
+      bannerSubtitle: 'AI-Powered Prompt Library',
+      pageTitle: 'Curated AI Prompts',
+      pageDescription: 'Explore a collection of high-quality prompts designed to get the most out of LLMs.',
+      copy: 'Copy Prompt',
+      copied: 'Copied!',
+      featured: 'Featured Prompt',
+    },
   },
   tr: {
     nav: {
@@ -113,6 +123,16 @@ export const translations = {
       posting: 'Gönderiliyor...',
       loading: 'Yorumlar yükleniyor...',
       error: 'Yorum gönderilemedi. Lütfen tekrar deneyin.',
+    },
+    prompts: {
+      title: 'Yapay Zeka İstemi',
+      bannerTitle: 'Yaratıcılığını Ortaya Çıkar',
+      bannerSubtitle: 'YZ Destekli İstem Kütüphanesi',
+      pageTitle: 'Seçilmiş YZ İstemleri',
+      pageDescription: 'LLM\'lerden en iyi şekilde yararlanmak için tasarlanmış yüksek kaliteli istem koleksiyonunu keşfedin.',
+      copy: 'İstemi Kopyala',
+      copied: 'Kopyalandı!',
+      featured: 'Öne Çıkan İstem',
     },
   },
 };

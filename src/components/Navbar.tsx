@@ -33,11 +33,11 @@ export default function Navbar() {
               <Link href="/blog" className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 {t.nav.blog}
               </Link>
+              <Link href="/prompts" className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                {t.prompts.title}
+              </Link>
               <Link href="/#contact" className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                 {t.nav.contact}
-              </Link>
-              <Link href="/prompts" className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                Prompts
               </Link>
               <div className="flex items-center gap-2 ml-4 border-l pl-4 border-gray-200 dark:border-gray-700">
                 <LanguageToggle />
@@ -96,19 +96,19 @@ export default function Navbar() {
             >
               {t.nav.blog}
             </Link>
+            <Link 
+                href="/prompts" 
+                onClick={() => setIsOpen(false)}
+                className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >
+              {t.prompts.title}
+            </Link>
               <Link 
                 href="/#contact" 
                 onClick={() => setIsOpen(false)}
                 className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
               {t.nav.contact}
-            </Link>
-            <Link 
-                href="/prompts" 
-                onClick={() => setIsOpen(false)}
-                className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Prompts
             </Link>
           </div>
         </div>
