@@ -82,7 +82,7 @@ export default function Comments() {
   };
 
   return (
-    <div className="mt-20 max-w-3xl mx-auto px-6 lg:px-8">
+    <div className="mt-20 mb-24 max-w-3xl mx-auto px-6 lg:px-8">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">{t.comments.title} ({comments.length})</h2>
 
       <form onSubmit={handleSubmit} className="mb-12 bg-gray-50 dark:bg-zinc-900 p-6 rounded-xl border border-gray-100 dark:border-zinc-800">
