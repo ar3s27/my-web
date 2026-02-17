@@ -24,20 +24,35 @@ interface TimelineEvent {
 }
 
 function parseDate(dateStr: string): number {
-  // Try to parse the date string directly
-  const timestamp = Date.parse(dateStr);
+  if (!dateStr) return 0;
+  const lower = dateStr.toLowerCase();
+  
+  // 1. Check for "Present" / "Current" keywords
+  // "günümüz", "present", "now", "devam"
+  if (lower.includes('present') || lower.includes('günümüz') || lower.includes('devam') || lower.includes('current') || lower.includes('now')) {
+     return 8640000000000000; // Max meaningful date
+  }
+
+  // 2. Handle Date Ranges (e.g. "2020 - 2022", "Jan 2020 – Feb 2023")
+  // Split by hyphen, en-dash, em-dash
+  const parts = dateStr.split(/[-\u2013\u2014]/); 
+  const endDateStr = parts[parts.length - 1].trim();
+
+  // 3. Try key parsing strategies on the End Date
+  
+  // Strategy A: Date.parse (works for "January 2024", "2024-01")
+  const timestamp = Date.parse(endDateStr);
   if (!isNaN(timestamp)) {
     return timestamp;
   }
   
-  // Fallback: try to extract year
-  const match = dateStr.match(/\d{4}/);
-  if (match) {
+  // Strategy B: Extract Year if simple parse failed
+  const match = endDateStr.match(/\d{4}/);
+  if (match && match[0]) {
+    // Treat "2023" as Jan 1 2023 for sorting purposes
     return new Date(parseInt(match[0]), 0, 1).getTime();
   }
   
-  // If all else fails, return a default far past date or future date depending on preference.
-  // We'll return 0 (1970) to put it at the end if sorting desc.
   return 0;
 }
 
