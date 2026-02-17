@@ -36,6 +36,7 @@ export const translations = {
       email: 'Email',
       message: 'Message',
       send: 'Send Message',
+      description: "Have a project in mind or just want to say hi? I'd love to hear from you.",
     },
     footer: {
       rights: 'All rights reserved.',
@@ -93,6 +94,7 @@ export const translations = {
       email: 'E-posta',
       message: 'Mesaj',
       send: 'Mesaj Gönder',
+      description: 'Aklınızda bir proje mi var veya sadece merhaba mı demek istiyorsunuz? Sizi duymak isterim.',
     },
     footer: {
       rights: 'Tüm hakları saklıdır.',

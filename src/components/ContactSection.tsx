@@ -46,7 +46,7 @@ export default function ContactSection() {
       <div className="max-w-xl mx-auto px-6 lg:px-8 text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl mb-6">{t.contact.title}</h2>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-10">
-          Have a project in mind or just want to say hi? I'd love to hear from you.
+          {t.contact.description}
         </p>
         <form onSubmit={handleSubmit} className="space-y-6 text-left">
            <div>
