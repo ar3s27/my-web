@@ -6,6 +6,7 @@ import { Prompt } from '@/lib/api';
 export default function AdminPromptsPage() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<Partial<Prompt>>({
     title: '',
@@ -224,9 +225,74 @@ export default function AdminPromptsPage() {
                 </div>
                 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
-                    <input type="text" name="imageUrl" value={formData.imageUrl} onChange={handleInputChange} className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="https://example.com/image.png" />
-                    <p className="text-xs text-gray-500 mt-1">Provide a URL for the card banner image.</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image</label>
+                    <div className="space-y-3">
+                        {/* File Upload */}
+                        <div className="flex items-center gap-3">
+                            <input 
+                                type="file" 
+                                accept="image/*"
+                                onChange={async (e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
+
+                                    setUploading(true);
+                                    const formData = new FormData();
+                                    formData.append('file', file);
+
+                                    try {
+                                        const res = await fetch('/api/upload', {
+                                            method: 'POST',
+                                            body: formData,
+                                        });
+                                        const data = await res.json();
+                                        if (data.success) {
+                                            setFormData(prev => ({ ...prev, imageUrl: data.url }));
+                                        } else {
+                                            alert('Upload failed: ' + data.message);
+                                        }
+                                    } catch (error) {
+                                        console.error('Upload error:', error);
+                                        alert('Upload failed');
+                                    } finally {
+                                        setUploading(false);
+                                    }
+                                }}
+                                className="block w-full text-sm text-gray-500
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-full file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-50 file:text-blue-700
+                                hover:file:bg-blue-100
+                                dark:file:bg-blue-900/30 dark:file:text-blue-300"
+                            />
+                            {uploading && <span className="text-sm text-blue-600 animate-pulse">Uploading...</span>}
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                <div className="w-full border-t border-gray-300 dark:border-zinc-700"></div>
+                            </div>
+                            <div className="relative flex justify-center">
+                                <span className="px-2 bg-white dark:bg-zinc-800 text-sm text-gray-500">or provide URL</span>
+                            </div>
+                        </div>
+
+                        <input 
+                            type="text" 
+                            name="imageUrl" 
+                            value={formData.imageUrl} 
+                            onChange={handleInputChange} 
+                            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none" 
+                            placeholder="https://example.com/image.png" 
+                        />
+                         {formData.imageUrl && (
+                            <div className="mt-2 relative h-32 w-full rounded-lg overflow-hidden border border-gray-200 dark:border-zinc-700">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">
