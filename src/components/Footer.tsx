@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/context/LanguageContext';
 
-import { Github, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Github, Linkedin, Instagram } from 'lucide-react';
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -15,17 +15,19 @@ export default function Footer() {
             <span className="sr-only">GitHub</span>
             <Github className="h-6 w-6" />
           </a>
-          <a href="https://linkedin.com/in/muhammed-veysel-erkoyuncu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+          <a href="https://www.linkedin.com/in/veysel-erkoyuncu/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
             <span className="sr-only">LinkedIn</span>
             <Linkedin className="h-6 w-6" />
           </a>
-           <a href="https://instagram.com/veysel.erkoyuncu" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+           <a href="https://instagram.com/veyselares27" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
             <span className="sr-only">Instagram</span>
             <Instagram className="h-6 w-6" />
           </a>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
-            <span className="sr-only">Twitter</span>
-            <Twitter className="h-6 w-6" />
+          <a href="https://x.com/VeyselErkoyunc3" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+            <span className="sr-only">X</span>
+            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+            </svg>
           </a>
         </div>
         <p className="mt-8 text-center text-base text-gray-400">
