@@ -1,0 +1,24 @@
+# Yeni 3D kişisel site — statik dosyalar, nginx ile sunulur.
+# Sunucuda ~/apps/veyselerkoyuncu-3d/compose.yaml olarak durur; deploy/deploy.sh günceller.
+# Cloudflare Tunnel siteye ortak "web" ağı üzerinden http://veysel3d:80 adresiyle ulaşır.
+# Kalıcı veri, gizli ayar ya da veritabanı yoktur; konteyner salt okunur çalışır.
+services:
+  site:
+    build: ./app
+    image: veyselerkoyuncu-3d:latest
+    container_name: veyselerkoyuncu-3d
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      web:
+        aliases: [veysel3d]
+
+networks:
+  web:
+    external: true
