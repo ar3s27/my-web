@@ -1,91 +1,51 @@
-# MyPortfolio
+# veyselerkoyuncu.com.tr — 3D kişisel site
 
-A modern, responsive personal portfolio and blog website built with Next.js, Tailwind CSS, and TypeScript.
+Muhammed Veysel Erkoyuncu'nun kişisel sitesi. Tek sayfa; kaydırdıkça 20.000'e varan parçacıktan oluşan
+bir 3D bulut her bölümde başka bir şekle dönüşür:
 
-## Features
+| Bölüm | Şekil |
+| --- | --- |
+| Giriş | Sinir ağı çekirdeği (küre) |
+| Hakkımda | DNA sarmalı |
+| Uzmanlık / Yetenekler | Yörünge halkaları |
+| Projeler | Veri arazisi |
+| İletişim | Galaksi |
 
-- **Hero Section**: Engaging introduction with a brief bio.
-- **About Me**: Detailed background information.
-- **Skills**: Visual representation of technical skills.
-- **Projects**: Showcase of featured projects with links to repositories/demos.
-- **Blog**: A section for sharing thoughts and articles.
-- **Contact**: A functional contact form layout.
-- **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices.
-- **Dark Mode**: Seamless support for light and dark themes.
+**Yığın:** Vite, React 19, TypeScript, three.js + @react-three/fiber (özel shader),
+framer-motion, Lenis. Türkçe / İngilizce.
 
-## Tech Stack
-
-- **Framework**: [Next.js 14](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **UI Components**: React 18
-
-## Getting Started
-
-Follow these steps to get the project running on your local machine.
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- [Node.js](https://nodejs.org/) (v18 or later recommended)
-- npm, yarn, or pnpm
-
-### Installation
-
-1.  Clone the repository:
-
-    ```bash
-    git clone https://github.com/yourusername/my-web.git
-    cd my-web
-    ```
-
-2.  Install dependencies:
-    ```bash
-    npm install
-    # or
-    yarn install
-    # or
-    pnpm install
-    ```
-
-### Running Locally
-
-Start the development server:
+## Geliştirme
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # tür denetimi + dist/
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+İçeriğin tamamı (metinler, projeler, sosyal hesaplar) `src/content.ts` içindedir.
+Yeni proje eklemek için `projects` dizisine bir kayıt eklemek yeterli.
 
-### Building for Production
+| Klasör | İçerik |
+| --- | --- |
+| `src/three/` | Parçacık şekilleri (`shapes.ts`), shader ve morf mantığı (`Particles.tsx`), sahne |
+| `src/components/` | Bölümler, yükleme ekranı, imleç, menü, proje penceresi |
+| `src/lib/` | Kaydırma durumu (Lenis), dil, yardımcı hook'lar |
+| `deploy/` | Docker Compose, nginx ayarı, yayın betiği |
 
-To create a production build:
+## Yayın (ev sunucusu)
 
 ```bash
-npm run build
-# or
-yarn build
-# or
-pnpm build
+bash deploy/deploy.sh
 ```
 
-The output will be in the `.next` folder. You can then start the production server with `npm start`.
+Betik kodu `veysel@192.168.1.4:~/apps/veyselerkoyuncu-3d/app` dizinine kopyalar, imajı sunucuda
+derler ve konteyneri yeniden başlatır. Konteyner ortak `web` ağına `veysel3d` adıyla bağlanır.
+Cloudflare Tunnel (homeserver) rotaları:
 
-## Project Structure
+| Adres | Hizmet |
+| --- | --- |
+| `veyselerkoyuncu.com.tr` | `http://veysel3d:80` |
+| `www.veyselerkoyuncu.com.tr` | `http://veysel3d:80` (nginx kök alan adına 301 ile yönlendirir) |
 
-- `src/app`: Contains the main application pages and layouts (App Router).
-- `src/components`: Reusable UI components (Navbar, Hero, Footer, etc.).
-- `src/lib`: Utility functions and API helpers.
-- `src/data`: Static data files.
-- `public`: Static assets like images and fonts.
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
+Erişilebilirlik: `prefers-reduced-motion` açıkken yumuşak kaydırma ve ağır animasyonlar kapanır;
+WebGL yoksa 3D sahne yerine durağan bir arka plan gösterilir.
