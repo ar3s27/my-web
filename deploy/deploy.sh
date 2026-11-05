@@ -30,4 +30,4 @@ docker image prune -f >/dev/null
 docker compose ps
 REMOTE
 
-echo ">> Tamam. Tünel adresi: http://veysel3d:80"
+echo ">> Tamam: https://veyselerkoyuncu.com.tr"

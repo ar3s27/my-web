@@ -39,8 +39,13 @@ bash deploy/deploy.sh
 ```
 
 Betik kodu `veysel@192.168.1.4:~/apps/veyselerkoyuncu-3d/app` dizinine kopyalar, imajı sunucuda
-derler ve konteyneri yeniden başlatır. Konteyner ortak `web` ağına `veysel3d` adıyla bağlanır;
-Cloudflare Tunnel'da yayın adresi `http://veysel3d:80` olmalıdır.
+derler ve konteyneri yeniden başlatır. Konteyner ortak `web` ağına `veysel3d` adıyla bağlanır.
+Cloudflare Tunnel (homeserver) rotaları:
+
+| Adres | Hizmet |
+| --- | --- |
+| `veyselerkoyuncu.com.tr` | `http://veysel3d:80` |
+| `www.veyselerkoyuncu.com.tr` | `http://veysel3d:80` (nginx kök alan adına 301 ile yönlendirir) |
 
 Erişilebilirlik: `prefers-reduced-motion` açıkken yumuşak kaydırma ve ağır animasyonlar kapanır;
 WebGL yoksa 3D sahne yerine durağan bir arka plan gösterilir.
