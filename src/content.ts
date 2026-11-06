@@ -289,28 +289,4 @@ export const projects: Project[] = [
     ],
     hues: ['#f97316', '#ef4444'],
   },
-  {
-    id: 'mesafe',
-    year: '2024',
-    title: { tr: 'İlçeden İlçeye Mesafe API', en: 'District Distance API' },
-    summary: {
-      tr: 'İl ve ilçe adlarıyla iki nokta arasındaki mesafeyi hesaplayan API.',
-      en: 'An API that returns the distance between two Turkish districts.',
-    },
-    description: {
-      tr: 'İl ve ilçe adları girilerek aralarındaki mesafeyi kullanıcıya bildiren bir API. Basit bir istekle iki ilçe arasındaki uzaklığı döndürür ve Vercel üzerinde yayında.',
-      en: 'An API that tells you the distance between two districts when you enter their province and district names. A single request returns the distance, and it is live on Vercel.',
-    },
-    role: { tr: 'Geliştirme', en: 'Development' },
-    highlights: {
-      tr: ['İl / ilçe adına göre sorgu', 'Mesafe hesabı tek istekte', "Vercel'de canlı"],
-      en: ['Query by province / district name', 'Distance in a single request', 'Live on Vercel'],
-    },
-    tags: ['Python', 'REST API', 'Vercel'],
-    links: [
-      { label: { tr: 'Canlı API', en: 'Live API' }, href: 'https://ilceden-ilceye-mesafe.vercel.app' },
-      { label: { tr: 'GitHub', en: 'GitHub' }, href: 'https://github.com/ar3s27/ilceden-ilceye-mesafe' },
-    ],
-    hues: ['#38bdf8', '#34d399'],
-  },
 ];
