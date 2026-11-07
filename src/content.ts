@@ -223,6 +223,37 @@ export const projects: Project[] = [
     isPrivate: true,
   },
   {
+    id: 'picalc',
+    year: '2026',
+    title: { tr: 'PiCalc — π Atlası', en: 'PiCalc — An Atlas of π' },
+    summary: {
+      tr: "π'ye giden 200'ü aşkın yolu formülü, kodu ve tarayıcıda canlı çalışan hesabıyla anlatan interaktif atlas.",
+      en: 'An interactive atlas of 200+ ways to compute π, each with its formula, code and a live in-browser calculation.',
+    },
+    description: {
+      tr: "Babil tabletlerinden Arşimet'in çokgenlerine, Ramanujan'ın serilerinden Chudnovsky algoritmasına π'yi hesaplamanın yollarını bir araya getiren site. Her yöntemin hesabı ziyaretçinin tarayıcısında, ayrı bir Web Worker'da çalışır; grafik her adımda kaç basamağın doğru olduğunu gösterir. Yöntemler yönetim panelinden eklenip düzenlenir; FastAPI arka uç ve SQLite ile kendi sunucumda tek konteyner olarak çalışıyor.",
+      en: "A site that collects the ways to compute π — from Babylonian tablets and Archimedes' polygons to Ramanujan's series and the Chudnovsky algorithm. Every method runs in the visitor's browser in a separate Web Worker, and a chart shows how many digits are correct at each step. Methods are added and edited from an admin panel; it runs as a single container on my own server with a FastAPI backend and SQLite.",
+    },
+    role: { tr: 'Tasarım & full-stack geliştirme', en: 'Design & full-stack development' },
+    highlights: {
+      tr: [
+        '4000 yıllık zaman çizgisi; çağa ve yöntem ailesine göre süzme',
+        'KaTeX ile formüller, adım kaydırıcısıyla canlı hesap ve yakınsama grafiği',
+        'En çok dört yöntemi aynı grafikte yarıştıran karşılaştırma sayfası',
+        'Toplu düzenleme, JSON içe/dışa aktarma ve bütün kodları deneyen yönetim paneli',
+      ],
+      en: [
+        'A 4,000-year timeline, filterable by era and method family',
+        'KaTeX formulas, a live calculation with a step slider and a convergence chart',
+        'A compare page that races up to four methods on one chart',
+        "Admin panel with bulk editing, JSON import/export and a check that runs every method's code",
+      ],
+    },
+    tags: ['React', 'TypeScript', 'FastAPI', 'KaTeX', 'SQLite', 'Docker'],
+    links: [{ label: { tr: 'Canlı', en: 'Live' }, href: 'https://pi.veyselerkoyuncu.com.tr' }],
+    hues: ['#facc15', '#10b981'],
+  },
+  {
     id: 'finsight',
     year: '2025',
     title: { tr: 'FinSightAI', en: 'FinSightAI' },
